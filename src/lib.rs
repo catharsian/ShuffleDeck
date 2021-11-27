@@ -16,9 +16,9 @@ use opengl_graphics::Texture;
 pub struct App {
     gl: GlGraphics, // OpenGL drawing backend..
     timer: f64,
-    first: bool,
-    second: bool,
-    third: bool,
+    first: f64,
+    second: f64,
+    third: f64,
 }
 const IMAGE_WIDTH: f64 = 100.0;
 const IMAGE_HEIGHT: f64= 170.0;
@@ -30,9 +30,9 @@ impl App {
         App {
             gl: GlGraphics::new(opengl),
             timer: 0.0,
-            first: true,
-            second: true,
-            third: true,
+            first: 2.0,
+            second: 5.0,
+            third: 8.0,
         }
     }
 
@@ -80,18 +80,18 @@ impl App {
     pub fn update(&mut self, args: &UpdateArgs, deck: &mut Deck) {
         deck.poses.animate(args.dt);
         self.timer += args.dt;
-        if self.first && self.timer > 2.0 {
+        if self.timer > self.first {
             deck.poses.go_circle();
-            self.first = false;
+            self.first += 8.0;
         }
-        if self.second && self.timer > 5.0 {
+        if self.timer > self.second {
             *deck = deck.shuffle();
             deck.poses.go_circle();
-            self.second = false;
+            self.second += 8.0;
         }
-        if self.third && self.timer > 9.0 {
+        if self.timer > self.third {
             deck.poses.go_straight();
-            self.third = false;
+            self.third += 8.0;
         }
     }
 }
